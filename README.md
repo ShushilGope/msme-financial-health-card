@@ -1,6 +1,12 @@
 # MSME Financial Health Card — Prototype
 **IDBI Innovate 2026 | Track 3: Financial Inclusion / Digital Lending / Credit Decisioning**
 
+## Status
+This is a **Round 1 prototype submission** — a working proof-of-concept, not a
+production system. It demonstrates the core scoring logic, explainability
+approach, and UX pattern; it is not connected to any live bank, GST, UPI, AA,
+or EPFO systems.
+
 ## What this is
 An explainable, alternate-data credit assessment prototype for New-to-Credit (NTC) and
 New-to-Bank (NTB) MSMEs. It aggregates four signal sources — GST, UPI, Account
@@ -14,9 +20,38 @@ Aggregator (AA) bank data, and EPFO — into a single Financial Health Score, wi
   from the same signals used for scoring — including red-flag detection for
   suspicious patterns (e.g. circular-transaction / gamed-data signatures) that a
   raw score alone would miss.
+- **Consent & audit trail**: simulated AA consent toggle, live score recomputation
+  on consent change, and a downloadable audit log of every scoring decision.
 
 All data is **100% synthetic and fictional** — no real customer, bank, or GST data
 is used anywhere in this prototype.
+
+## Limitations (honest, by design)
+- **Scoring weights are judgment-based, not data-derived.** No real default/repayment
+  outcome data was available to train or calibrate weights. Weights reflect
+  directional BFSI underwriting logic (GST/UPI weighted highest as hardest-to-fake
+  activity signals), not statistical validation.
+- **Only one fraud/gaming pattern is detected** (circular-transaction signature via
+  UPI volatility + transaction count). Real-world gaming behavior is far more varied.
+- **Only 4 data sources.** Utility bill payments, e-way bill data, Udyam registration,
+  and trade-reference data are not yet included.
+- **No live API integration.** GST, UPI, AA, and EPFO data are simulated; production
+  deployment requires real integration with GSTN, NPCI/UPI, Sahamati (AA), and EPFO
+  data services, plus ULI/OCEN connectivity.
+- **Rule-based, not ML.** Deliberate choice for Round 1 — see Roadmap below.
+
+## Roadmap (Phase 2+)
+- Calibrate scoring weights using logistic regression / gradient boosting once real
+  historical repayment outcome data is available (via IDBI sandbox access).
+- Expand fraud/anomaly detection beyond circular-transaction patterns (e.g. invoice
+  mismatch detection, sudden vendor concentration shifts).
+- Add utility bill payments, e-way bill data, Udyam registration, and trade-reference
+  signals as additional scoring inputs.
+- Live integration with GSTN, UPI/NPCI, Sahamati Account Aggregator network, EPFO,
+  and IDBI's ULI/OCEN ecosystem.
+- Portfolio-level dashboard (risk concentration, expected default distribution
+  across a loan book, not just single-applicant scoring).
+- Human-in-the-loop review workflow aligned with RBI Digital Lending Guidelines.
 
 ## Run locally
 ```bash
