@@ -6,6 +6,8 @@ signals — with deliberate variance: strong, weak, borderline, missing-data, an
 """
 import random
 
+random.seed(42)
+
 BUSINESS_TYPES = ["Trader", "Manufacturer", "Service Provider", "Retailer", "Exporter"]
 
 def gen_business(name, profile_type):
@@ -94,6 +96,4 @@ PROFILES = [
 ]
 
 def get_dataset():
-    random.seed(42)  # reset every call — Streamlit reruns this function on every interaction,
-                      # so the seed must be reset each time, not just once at module import
     return [gen_business(name, ptype) for name, ptype in PROFILES]
