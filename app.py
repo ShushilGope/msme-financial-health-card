@@ -39,7 +39,7 @@ st.session_state.audit_log.append({
     "Business": business["name"],
     "AA Consent": "Given" if aa_consent else "Revoked/Not Given",
     "Sources Used": result["sources_used"],
-    "Score": result["final_score"],
+    "Score": result["final_score"] if result["final_score"] is not None else "N/A",
     "Confidence": result["confidence"],
     "Risk Band": risk_band(result["final_score"]),
 })
@@ -125,9 +125,13 @@ st.caption("Every scoring decision is logged with the consent state and data sou
            "supports RBI Digital Lending Guidelines requirements for traceable, human-reviewable decisions.")
 
 log_df = pd.DataFrame(st.session_state.audit_log)
-st.dataframe(log_df, use_container_width=True, hide_index=True)
+csv = log_df.to_csv(index=False).encode("utf-8")  # build CSV from original types first
+log_df_display = log_df.astype(str)  # force uniform string dtype — avoids pyarrow crash on mixed None/float columns
+try:
+    st.dataframe(log_df_display, use_container_width=True, hide_index=True)
+except Exception:
+    st.table(log_df_display)
 
-csv = log_df.to_csv(index=False).encode("utf-8")
 st.download_button("Download Audit Log (CSV)", csv, "audit_log.csv", "text/csv")
 
 if st.button("Clear Audit Log"):
