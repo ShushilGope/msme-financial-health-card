@@ -66,7 +66,7 @@ with c1:
         }
     ))
     fig.update_layout(height=280, margin=dict(l=20, r=20, t=50, b=10))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 with c2:
     st.metric("Risk Band", risk_band(result["final_score"]))
@@ -125,7 +125,7 @@ st.caption("Every scoring decision is logged with the consent state and data sou
            "supports RBI Digital Lending Guidelines requirements for traceable, human-reviewable decisions.")
 
 log_df = pd.DataFrame(st.session_state.audit_log)
-st.dataframe(log_df, use_container_width=True, hide_index=True)
+st.dataframe(log_df, width='stretch', hide_index=True)
 
 csv = log_df.to_csv(index=False).encode("utf-8")
 st.download_button("Download Audit Log (CSV)", csv, "audit_log.csv", "text/csv")
