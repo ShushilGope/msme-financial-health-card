@@ -7,6 +7,31 @@ production system. It demonstrates the core scoring logic, explainability
 approach, and UX pattern; it is not connected to any live bank, GST, UPI, AA,
 or EPFO systems.
 
+## Why This Approach (Differentiators)
+Most alternate-data MSME scoring solutions — including established platforms like
+Perfios, FinBox, and Karza — optimize primarily for prediction accuracy, delivering
+a score with limited transparency into how it was derived. This prototype optimizes
+for **underwriter trust**, which matters more for actual loan approval decisions:
+
+- **Explainability is computed, not generated.** Every rationale line traces directly
+  to a threshold triggered by real input signals — not an LLM narrating a plausible
+  story after the fact. Auditable by design.
+- **Catches what the score alone misses.** The "trap" test cases in this prototype
+  demonstrate a business that scores as Low Risk on the number alone, while the
+  explainability layer flags a circular-transaction pattern consistent with gamed
+  data — the kind of case that would otherwise get approved by a black-box model.
+- **Built for thin-file reality, not the happy path.** Most MSMEs this program is
+  meant to serve won't have all 4 data sources available. The system degrades
+  gracefully — reducing confidence, not refusing to score — rather than assuming
+  complete data like most reference implementations do.
+- **Regulation-native, not retrofitted.** Consent-based data access (simulated AA
+  toggle), live score recomputation on consent change, and a full audit trail are
+  core design choices aligned with RBI Digital Lending Guidelines — not features
+  bolted on after the fact.
+- **Honest about its own limitations.** Scoring weights are explicitly labeled as
+  judgment-based v1 assumptions with a clear path to data-driven calibration in
+  Phase 2, rather than presenting unvalidated numbers as proven.
+
 ## What this is
 An explainable, alternate-data credit assessment prototype for New-to-Credit (NTC) and
 New-to-Bank (NTB) MSMEs. It aggregates four signal sources — GST, UPI, Account
